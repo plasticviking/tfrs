@@ -1,0 +1,65 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: scan-handler
+  annotations:
+    description: Defines how to deploy the application server
+spec:
+  strategy:
+    type: Recreate
+triggers:
+- type: ImageChange
+  imageChangeParams:
+    automatic: true
+    containerNames:
+    - tfrs-scan-handler
+    from:
+      kind: ImageStreamTag
+      namespace: mem-tfrs-tools
+      name: tfrs-develop:dev
+- type: ConfigChange
+replicas: 1
+test: false
+selector:
+  name: tfrs-scan-handler
+template:
+  metadata:
+    name: tfrs-scan-handler
+    creationTimestamp: 
+    labels:
+      name: tfrs-scan-handler
+  spec:
+    containers:
+    - name: tfrs-scan-handler
+      command: ["/bin/sh",
+      				 "-c",
+               "python runscript api.scripts.handle_security_scans"]
+      env:
+      - name: DATABASE_SERVICE_NAME
+        value: postgresql
+      - name: DATABASE_ENGINE
+        value: postgresql
+      - name: DATABASE_NAME
+        value: tfrs
+      - name: RABBITMQ_USER
+        value: tfrs
+      - name: RABBITMQ_VHOST
+        value: "/tfrs"
+      - name: RABBITMQ_HOST
+        value: rabbit.mem-tfrs-dev.svc
+      - name: RABBITMQ_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: rabbitmq
+            key: password
+      - name: DATABASE_USER
+        valueFrom:
+          secretKeyRef:
+            name: tfrs-postgresql
+            key: DATABASE_USER
+      - name: DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: tfrs-postgresql
+            key: DATABASE_PASSWORD
+    restartPolicy: Always

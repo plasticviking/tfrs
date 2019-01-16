@@ -24,6 +24,8 @@ spec:
         - name: CLAMAV_HOST
           value: "clamav"
         - name: AMQP_VHOST
+          value: "/tfrs"
+        - name: AMQP_HOST
           value: "rabbitmq"
         - name: AMQP_USER
           value: "rabbitmq_user"
