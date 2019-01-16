@@ -1,0 +1,19 @@
+kind: BuildConfig
+apiVersion: "v1"
+metadata:
+  labels:
+    build: scan-coordinator
+  name: scan-coordinator
+  namespace: security-scan-test
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'scan-coordinator:latest'
+  runPolicy: Serial
+  source:
+    contextDir: "security-scan/scan-coordinator"
+    git:
+      uri: https://github.com/bcgov/tfrs
+  strategy:
+    dockerStrategy: {}

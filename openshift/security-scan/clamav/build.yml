@@ -1,0 +1,21 @@
+kind: BuildConfig
+apiVersion: "v1"
+metadata:
+  labels:
+    build: clamav
+  name: clamav
+  namespace: security-scan-test
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'clamav:latest'
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/mko-x/docker-clamav
+  strategy:
+    dockerStrategy:
+      forcePull: true
+status:
+  lastVersion: 1

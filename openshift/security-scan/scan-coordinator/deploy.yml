@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: scan-coordinator
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: scan-coordinator
+    spec:
+      containers:
+      - image: scan-coordinator
+        name: scan-coordinator
+        env:
+        - name: MINIO_ENDPOINT
+          value: "minio:9000"
+        - name: MINIO_ACCESS_KEY
+          value: "access_key"
+        - name: MINIO_SECRET_KEY
+          value: "secret_key"
+        - name: MINIO_USE_SSL
+          value: "true"
+        - name: CLAMAV_HOST
+          value: "clamav"
+        - name: AMQP_VHOST
+          value: "rabbitmq"
+        - name: AMQP_USER
+          value: "rabbitmq_user"
+        - name: AMQP_PASSWORD
+          value: "rabbitmq_password"
+      restartPolicy: Always
+  selector:
+    name: scan-coordinator
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - scan-coordinator
+      from:
+        kind: ImageStreamTag
+        name: scan-coordinator:latest
+    type: ImageChange
+  strategy:
+    type: Rolling
