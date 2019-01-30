@@ -82,8 +82,6 @@ services:
             - KEYCLOAK_ISSUER=http://keycloak:8080/auth/realms/tfrs
             - KEYCLOAK_CALLBACK_URL=http://nginx:10920/authCallback
             - KEYCLOAK_POST_LOGOUT_URL=http://nginx:10920/
-        volumes:
-            - node_modules:/app/node_modules
     nginx:
         depends_on:
             - django
@@ -154,7 +152,6 @@ services:
             - ./functional-tests/build:/functional-tests/build
             - gradle_cache:/root/.gradle/caches
 volumes:
-    node_modules:
     postgres_keycloak_data:
     minio_data:
     gradle_cache:
