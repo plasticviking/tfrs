@@ -13,6 +13,9 @@ import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
 import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
+import com.aoe.gebspockreports.GebReportingListener
+
+
 
 waiting {
   timeout = 20
@@ -108,3 +111,6 @@ autoClearCookies = true
 autoClearWebStorage = true
 cacheDriverPerThread = true
 quitCachedDriverOnShutdown = true
+reportOnTestFailureOnly = false
+reportingListener = new GebReportingListener()
+reportsDir = 'build/reports/spock'

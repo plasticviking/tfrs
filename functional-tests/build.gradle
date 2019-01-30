@@ -16,7 +16,7 @@ ext {
         groovyVersion = '2.5.1' // Updating this past 2.5.1 causes spock reports to fail the test execution
         gebVersion = '2.2'
         seleniumVersion = '3.141.59'
-        chromeDriverVersion = '2.44'
+        chromeDriverVersion = '2.45'
         geckoDriverVersion = '0.22.0'
         ieDriverVersion = '3.14.0'
         edgeDriverVersion = '3.14.0'
@@ -32,9 +32,14 @@ apply from: "gradle/osSpecificDownloads.gradle"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
+
+    testCompile 'com.aoe:geb-spock-reports:0.2.1'
+
+
     // If using Spock, need to depend on geb-spock
     testCompile "org.gebish:geb-spock:$gebVersion"
     testCompile("org.spockframework:spock-core:$spockCoreVersion") {

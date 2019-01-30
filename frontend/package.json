@@ -87,6 +87,7 @@
   "scripts": {
     "start": "node server",
     "start:docker": "node server-docker.js",
+    "start:docker-ft": "node server-docker-ft.js",
     "start:notifications": "node server-notifications.js",
     "production": "NODE_ENV=production webpack -p --config webpack.production.config.js",
     "build": "webpack",
