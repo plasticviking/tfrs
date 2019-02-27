@@ -6,14 +6,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-
-import CreditTransactionRequestFormDetails from './CreditTransactionRequestFormDetails';
+import SecureFileSubmissionFormDetails from './SecureFileSubmissionFormDetails';
 import Errors from '../../app/components/Errors';
 import history from '../../app/History';
 import * as Lang from '../../constants/langEnUs';
 import DOCUMENT_STATUSES from '../../constants/documentStatuses';
 
-class CreditTransactionRequestForm extends Component {
+class SecureFileSubmissionForm extends Component {
   componentDidMount () {
     this.props.getCompliancePeriods();
   }
@@ -26,7 +25,7 @@ class CreditTransactionRequestForm extends Component {
           onSubmit={(event, status) =>
             this.props.handleSubmit(event, DOCUMENT_STATUSES.draft)}
         >
-          <CreditTransactionRequestFormDetails
+          <SecureFileSubmissionFormDetails
             categories={this.props.categories}
             compliancePeriods={this.props.referenceData.compliancePeriods}
             documentType={this.props.documentType}
@@ -84,12 +83,12 @@ class CreditTransactionRequestForm extends Component {
   }
 }
 
-CreditTransactionRequestForm.defaultProps = {
+SecureFileSubmissionForm.defaultProps = {
   edit: false,
   id: 0
 };
 
-CreditTransactionRequestForm.propTypes = {
+SecureFileSubmissionForm.propTypes = {
   availableActions: PropTypes.arrayOf(PropTypes.string).isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   referenceData: PropTypes.shape({
@@ -125,4 +124,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreditTransactionRequestForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SecureFileSubmissionForm);
