@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
-import getCompliancePeriods from '../../actions/compliancePeriodsActions';
 import CreditTransactionRequestFormDetails from './CreditTransactionRequestFormDetails';
 import Errors from '../../app/components/Errors';
 import history from '../../app/History';
@@ -29,7 +28,7 @@ class CreditTransactionRequestForm extends Component {
         >
           <CreditTransactionRequestFormDetails
             categories={this.props.categories}
-            compliancePeriods={this.props.compliancePeriods}
+            compliancePeriods={this.props.referenceData.compliancePeriods}
             documentType={this.props.documentType}
             edit={this.props.edit}
             fields={this.props.fields}
@@ -93,7 +92,11 @@ CreditTransactionRequestForm.defaultProps = {
 CreditTransactionRequestForm.propTypes = {
   availableActions: PropTypes.arrayOf(PropTypes.string).isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  compliancePeriods: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  referenceData: PropTypes.shape({
+    compliancePeriods: PropTypes.arrayOf(PropTypes.shape),
+    isFetching: PropTypes.bool,
+    isSuccessful: PropTypes.bool
+  }).isRequired,
   edit: PropTypes.bool,
   errors: PropTypes.shape({}).isRequired,
   documentType: PropTypes.oneOfType([
@@ -106,18 +109,20 @@ CreditTransactionRequestForm.propTypes = {
   fields: PropTypes.shape({
     comment: PropTypes.string
   }).isRequired,
-  getCompliancePeriods: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   id: PropTypes.number
 };
 
 const mapStateToProps = state => ({
-  compliancePeriods: state.rootReducer.compliancePeriods.items
+  referenceData: {
+    compliancePeriods: state.rootReducer.referenceData.data.compliancePeriods,
+    isFetching: state.rootReducer.referenceData.isFetching,
+    isSuccessful: state.rootReducer.referenceData.success
+  }
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCompliancePeriods: bindActionCreators(getCompliancePeriods, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreditTransactionRequestForm);

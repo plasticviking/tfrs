@@ -22,12 +22,24 @@ export const REFERENCE_DATA_API_ENDPOINTS = {
   organizationTypes: '/organizations/types',
   organizationActionsTypes: '/organizations/actions_types',
   organizationStatuses: '/organizations/statuses'
+  ////signing authority confirmations
+  //compliance periods
+  //roles (permissions?)
+  //fuelSuppliers
+  //org types
+  //org statuses + clean
+  //ct types
+  //doc statuses clean
+
+
 };
 
 if (CONFIG.SECURE_DOCUMENT_UPLOAD.ENABLED) {
   REFERENCE_DATA_API_ENDPOINTS.documentCategories = '/documents/categories';
   REFERENCE_DATA_API_ENDPOINTS.documentStatuses = '/documents/statuses';
 }
+
+
 
 export const USERS = '/users';
 export const CURRENT_USER = '/users/current';
@@ -37,10 +49,8 @@ export const CURRENT_USER = '/users/current';
 export const DELETE = '/delete';
 export const NOTIFICATIONS_API = '/notifications';
 
-export { default as COMPLIANCE_PERIODS } from './routes/CompliancePeriods';
 export { default as CONTACT_US } from './routes/ContactUs';
 export { default as ROLES } from './routes/Roles';
-export { default as SIGNING_AUTHORITY_ASSERTIONS } from './routes/SigningAuthorityAssertions';
 export { default as SIGNING_AUTHORITY_CONFIRMATIONS } from './routes/SigningAuthorityConfirmations';
 export { default as NOTIFICATIONS } from './routes/Notifications';
 export { default as SECURE_DOCUMENT_UPLOAD } from './routes/SecureDocumentUpload';

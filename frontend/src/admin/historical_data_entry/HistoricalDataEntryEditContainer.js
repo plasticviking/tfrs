@@ -19,7 +19,6 @@ import {
   updateCommentOnCreditTransfer,
   updateCreditTransfer
 } from '../../actions/creditTransfersActions';
-import getCompliancePeriods from '../../actions/compliancePeriodsActions';
 import history from '../../app/History';
 import HistoricalDataEntryForm from './components/HistoricalDataEntryForm';
 
@@ -53,7 +52,6 @@ class HistoricalDataEntryEditContainer extends Component {
 
   componentDidMount () {
     this.loadData(this.props.match.params.id);
-    this.props.getCompliancePeriods();
     this.props.getFuelSuppliers();
   }
 
@@ -163,7 +161,7 @@ class HistoricalDataEntryEditContainer extends Component {
     return (
       <HistoricalDataEntryForm
         actions={buttonActions}
-        compliancePeriods={this.props.compliancePeriods}
+        compliancePeriods={this.props.referenceData.compliancePeriods}
         editMode
         errors={this.props.errors}
         fuelSuppliers={this.props.fuelSuppliers}
@@ -186,7 +184,11 @@ HistoricalDataEntryEditContainer.propTypes = {
   compliancePeriods: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   errors: PropTypes.shape({}),
   fuelSuppliers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  getCompliancePeriods: PropTypes.func.isRequired,
+  referenceData: PropTypes.shape({
+    compliancePeriods: PropTypes.arrayOf(PropTypes.shape),
+    isFetching: PropTypes.bool,
+    isSuccessful: PropTypes.bool
+  }).isRequired,
   getCreditTransfer: PropTypes.func.isRequired,
   getFuelSuppliers: PropTypes.func.isRequired,
   invalidateCreditTransfers: PropTypes.func.isRequired,
@@ -205,7 +207,11 @@ HistoricalDataEntryEditContainer.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  compliancePeriods: state.rootReducer.compliancePeriods.items,
+  referenceData: {
+    compliancePeriods: state.rootReducer.referenceData.data.compliancePeriods,
+    isFetching: state.rootReducer.referenceData.isFetching,
+    isSuccessful: state.rootReducer.referenceData.success
+  },
   errors: state.rootReducer.creditTransfer.errors,
   fuelSuppliers: state.rootReducer.fuelSuppliersRequest.fuelSuppliers,
   isFetching: state.rootReducer.creditTransfer.isFetching,

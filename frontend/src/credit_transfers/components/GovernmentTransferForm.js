@@ -4,10 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-
-import getCompliancePeriods from '../../actions/compliancePeriodsActions';
 import Errors from '../../app/components/Errors';
 import TooltipWhenDisabled from '../../app/components/TooltipWhenDisabled';
 import history from '../../app/History';
@@ -31,7 +28,7 @@ class GovernmentTransferForm extends Component {
             this.props.handleSubmit(event, CREDIT_TRANSFER_STATUS.draft)}
         >
           <GovernmentTransferFormDetails
-            compliancePeriods={this.props.compliancePeriods}
+            compliancePeriods={this.props.referenceData.compliancePeriods}
             fuelSuppliers={this.props.fuelSuppliers}
             fields={this.props.fields}
             handleInputChange={this.props.handleInputChange}
@@ -124,13 +121,16 @@ GovernmentTransferForm.propTypes = {
   addComment: PropTypes.func.isRequired,
   canComment: PropTypes.bool.isRequired,
   canCreatePrivilegedComment: PropTypes.bool.isRequired,
-  compliancePeriods: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   errors: PropTypes.shape({}).isRequired,
   fields: PropTypes.shape({
     comment: PropTypes.string
   }).isRequired,
+  referenceData: PropTypes.shape({
+    compliancePeriods: PropTypes.arrayOf(PropTypes.shape),
+    isFetching: PropTypes.bool,
+    isSuccessful: PropTypes.bool
+  }).isRequired,
   fuelSuppliers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  getCompliancePeriods: PropTypes.func.isRequired,
   handleCommentChanged: PropTypes.func,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -142,11 +142,14 @@ GovernmentTransferForm.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  compliancePeriods: state.rootReducer.compliancePeriods.items
+  referenceData: {
+    compliancePeriods: state.rootReducer.referenceData.data.compliancePeriods,
+    isFetching: state.rootReducer.referenceData.isFetching,
+    isSuccessful: state.rootReducer.referenceData.success
+  }
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCompliancePeriods: bindActionCreators(getCompliancePeriods, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GovernmentTransferForm);

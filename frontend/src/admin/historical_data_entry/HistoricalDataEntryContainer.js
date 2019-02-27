@@ -18,7 +18,6 @@ import {
   prepareCreditTransfer,
   processApprovedCreditTransfers
 } from '../../actions/creditTransfersActions';
-import getCompliancePeriods from '../../actions/compliancePeriodsActions';
 import { getFuelSuppliers } from '../../actions/organizationActions';
 import HistoricalDataEntryPage from './components/HistoricalDataEntryPage';
 import AdminTabs from '../components/AdminTabs';
@@ -53,7 +52,6 @@ class HistoricalDataEntryContainer extends Component {
   componentDidMount () {
     this.props.invalidateCreditTransfers();
     this.loadData();
-    this.props.getCompliancePeriods();
     this.props.getFuelSuppliers();
   }
 
@@ -157,7 +155,7 @@ class HistoricalDataEntryContainer extends Component {
         addErrors={this.props.addErrors}
         commitErrors={this.props.commitErrors}
         commitMessage={this.props.commitMessage}
-        compliancePeriods={this.props.compliancePeriods}
+        compliancePeriods={this.props.referenceData.compliancePeriods}
         deleteCreditTransfer={this._deleteCreditTransfer}
         fields={this.state.fields}
         fuelSuppliers={this.props.fuelSuppliers}
@@ -196,7 +194,6 @@ HistoricalDataEntryContainer.propTypes = {
   deleteCreditTransfer: PropTypes.func.isRequired,
   fuelSuppliers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   getApprovedCreditTransfersIfNeeded: PropTypes.func.isRequired,
-  getCompliancePeriods: PropTypes.func.isRequired,
   getFuelSuppliers: PropTypes.func.isRequired,
   historicalData: PropTypes.shape({
     items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
@@ -204,6 +201,11 @@ HistoricalDataEntryContainer.propTypes = {
   }).isRequired,
   invalidateCreditTransfer: PropTypes.func.isRequired,
   invalidateCreditTransfers: PropTypes.func.isRequired,
+  referenceData: PropTypes.shape({
+    compliancePeriods: PropTypes.arrayOf(PropTypes.shape),
+    isFetching: PropTypes.bool,
+    isSuccessful: PropTypes.bool
+  }).isRequired,
   loggedInUser: PropTypes.shape({
     organization: PropTypes.shape({
       id: PropTypes.number,
@@ -222,7 +224,11 @@ const mapStateToProps = state => ({
   addErrors: state.rootReducer.creditTransfer.errors,
   commitErrors: state.rootReducer.approvedCreditTransfers.errors,
   commitMessage: state.rootReducer.approvedCreditTransfers.message,
-  compliancePeriods: state.rootReducer.compliancePeriods.items,
+  referenceData: {
+    compliancePeriods: state.rootReducer.referenceData.data.compliancePeriods,
+    isFetching: state.rootReducer.referenceData.isFetching,
+    isSuccessful: state.rootReducer.referenceData.success
+  },
   fuelSuppliers: state.rootReducer.fuelSuppliersRequest.fuelSuppliers,
   historicalData: {
     items: state.rootReducer.approvedCreditTransfers.items,
@@ -238,7 +244,6 @@ const mapDispatchToProps = dispatch => ({
   getApprovedCreditTransfersIfNeeded: () => {
     dispatch(getApprovedCreditTransfersIfNeeded());
   },
-  getCompliancePeriods: bindActionCreators(getCompliancePeriods, dispatch),
   getFuelSuppliers: bindActionCreators(getFuelSuppliers, dispatch),
   invalidateCreditTransfer: bindActionCreators(invalidateCreditTransfer, dispatch),
   invalidateCreditTransfers: bindActionCreators(invalidateCreditTransfers, dispatch),

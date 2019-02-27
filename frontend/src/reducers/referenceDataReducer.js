@@ -6,7 +6,6 @@ const referenceData = (state = {
   success: false,
   errorMessage: [],
   data: {
-    documentCategories: []
   }
 }, action) => {
   if (action.name === ReducerTypes.REFERENCE_DATA) {

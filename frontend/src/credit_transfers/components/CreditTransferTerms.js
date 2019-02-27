@@ -1,22 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import getSigningAuthorityAssertions from '../../actions/signingAuthorityAssertionsActions';
 import CheckBox from '../../app/components/CheckBox';
 
 class CreditTransferTerms extends Component {
-  componentDidMount () {
-    this.props.getSigningAuthorityAssertions();
-  }
-
   render () {
     let content = [(
       <h3 className="terms-header" key="header">Signing Authority Declaration</h3>
     )];
 
-    content = content.concat(this.props.signingAuthorityAssertions.map(assertion => (
+    content = content.concat(this.props.referenceData.signingAuthorityAssertions.map(assertion => (
       <div className="terms" key={assertion.id}>
         <div id="credit-transfer-term" className="check">
           <CheckBox
@@ -39,18 +33,23 @@ CreditTransferTerms.propTypes = {
   fields: PropTypes.shape({
     terms: PropTypes.array
   }).isRequired,
-  getSigningAuthorityAssertions: PropTypes.func.isRequired,
-  signingAuthorityAssertions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  toggleCheck: PropTypes.func.isRequired
+  toggleCheck: PropTypes.func.isRequired,
+  referenceData: PropTypes.shape({
+    signingAuthorityAssertions: PropTypes.arrayOf(PropTypes.shape),
+    isFetching: PropTypes.bool,
+    isSuccessful: PropTypes.bool
+  }).isRequired
 };
 
 const mapStateToProps = state => ({
-  isFetching: state.rootReducer.signingAuthorityAssertions.isFetching,
-  signingAuthorityAssertions: state.rootReducer.signingAuthorityAssertions.items
+  referenceData: {
+    signingAuthorityAssertions: state.rootReducer.referenceData.data.signingAuthorityAssertions,
+    isFetching: state.rootReducer.referenceData.isFetching,
+    isSuccessful: state.rootReducer.referenceData.success
+  }
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSigningAuthorityAssertions: bindActionCreators(getSigningAuthorityAssertions, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreditTransferTerms);

@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets, permissions, status, mixins
 from rest_framework.decorators import list_route, detail_route
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import filters
 
@@ -272,3 +273,15 @@ class CreditTradeViewSet(AuditableMixin, mixins.CreateModelMixin,
         workbook.save(response)
 
         return response
+
+    @list_route(methods=['get'], permission_classes=[AllowAny])
+    def statuses(self, request):
+        """
+        Gets the list of statuses that can be applied to a credit trade
+        """
+        statuses = CreditTradeStatus.objects.all()
+
+        serializer = self.get_serializer(
+            statuses, read_only=True, many=True)
+
+        return Response(serializer.data)
