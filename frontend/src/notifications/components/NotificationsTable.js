@@ -10,7 +10,6 @@ import moment from 'moment';
 
 import CheckBox from '../../app/components/CheckBox';
 import history from '../../app/History';
-import NOTIFICATION_TYPES from '../../constants/notificationTypes';
 import CREDIT_TRANSACTIONS from '../../constants/routes/CreditTransactions';
 import SECURE_DOCUMENT_UPLOAD from '../../constants/routes/SecureDocumentUpload';
 

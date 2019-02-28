@@ -16,7 +16,6 @@ import {
   uploadDocument
 } from '../actions/documentUploads';
 import history from '../app/History';
-import DOCUMENT_STATUSES from '../constants/documentStatuses';
 import SECURE_DOCUMENT_UPLOAD from '../constants/routes/SecureDocumentUpload';
 import toastr from '../utils/toastr';
 import SecureFileSubmissionForm from "./components/SecureFileSubmissionForm";
@@ -246,7 +245,9 @@ class SecureFileSubmissionEditContainer extends Component {
       />,
       <Modal
         handleSubmit={(event) => {
-          this._handleSubmit(event, DOCUMENT_STATUSES.submitted);
+          this._handleSubmit(event,
+            this.props.referenceData.documentStatuses.find(s => (s.status === 'Submitted'))
+          );
         }}
         id="confirmSubmit"
         key="confirmSubmit"
@@ -294,6 +295,10 @@ SecureFileSubmissionEditContainer.propTypes = {
   }).isRequired,
   referenceData: PropTypes.shape({
     documentCategories: PropTypes.arrayOf(PropTypes.shape),
+    documentStatuses: PropTypes.arrayOf(PropTypes.shape({
+      status: PropTypes.string,
+      id: PropTypes.number,
+    })),
     isFetching: PropTypes.bool,
     isSuccessful: PropTypes.bool
   }).isRequired,
